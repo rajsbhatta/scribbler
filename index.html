@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1a1612" />
+  <meta name="description" content="A literary commonplace for the curious mind. Daily prose, a personal anthology, and a writer's atelier." />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Almanac" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <title>The Scribbler's Almanac</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ═══════════════════════════════════════
+       SIDEBAR
+  ════════════════════════════════════════ -->
+  <nav id="sidebar">
+    <div class="brand">
+      <div class="brand-title">The Scribbler's<br>Almanac</div>
+      <div class="brand-sub">A Literary Commonplace</div>
+    </div>
+
+    <div class="nav">
+      <div class="nav-section">Read</div>
+      <div class="nav-item active" id="nav-dispensary" onclick="showView('dispensary')">
+        <i class="nav-icon">◆</i> The Dispensary
+      </div>
+
+      <div class="nav-section">Collect</div>
+      <div class="nav-item" id="nav-anthology" onclick="showView('anthology')">
+        <i class="nav-icon">❧</i> The Anthology
+      </div>
+
+      <div class="nav-section">Create</div>
+      <div class="nav-item" id="nav-atelier" onclick="showView('atelier')">
+        <i class="nav-icon">✒</i> The Atelier
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <button class="footer-btn" onclick="exportData()">↑ Export</button>
+      <button class="footer-btn" onclick="triggerImport()">↓ Import</button>
+      <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)" />
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════
+       MAIN AREA
+  ════════════════════════════════════════ -->
+  <main id="main">
+
+    <!-- ─── THE DISPENSARY ─── -->
+    <div class="view active" id="view-dispensary">
+      <div class="disp-header">
+        <div class="disp-date" id="disp-date">—</div>
+        <div class="disp-nav">
+          <button class="disp-btn" onclick="stepStory(-1)">← prev</button>
+          <button class="disp-btn" onclick="stepStory(1)">next →</button>
+        </div>
+      </div>
+      <div class="reading-area" id="reading-area">
+        <!-- Injected by app.js -->
+      </div>
+    </div>
+
+    <!-- ─── THE ANTHOLOGY ─── -->
+    <div class="view" id="view-anthology">
+      <div class="panel-header">
+        <div class="panel-title">
+          The Anthology
+          <small class="panel-count" id="quote-count">0 fragments</small>
+        </div>
+        <button class="btn" onclick="openAddQuote()">+ Add Fragment</button>
+      </div>
+      <div class="anth-body">
+        <div class="search-row">
+          <input
+            class="search-input"
+            id="search-input"
+            type="text"
+            placeholder="Search your fragments…"
+            oninput="renderQuotes()"
+          />
+          <button class="btn" style="border-radius:0 3px 3px 0">Search</button>
+        </div>
+        <div class="tag-row" id="tag-row"></div>
+        <div id="quotes-list"></div>
+      </div>
+    </div>
+
+    <!-- ─── THE ATELIER ─── -->
+    <div class="view" id="view-atelier">
+      <!-- Pieces sidebar -->
+      <div class="pieces-col">
+        <div class="pieces-top">
+          <span class="pieces-label">Your Pieces</span>
+          <button class="new-btn" onclick="newPiece()" title="New piece">+</button>
+        </div>
+        <div class="pieces-list" id="pieces-list"></div>
+      </div>
+
+      <!-- Editor -->
+      <div class="editor-col">
+        <div class="editor-bar">
+          <input
+            class="ed-title"
+            id="ed-title"
+            type="text"
+            placeholder="Untitled"
+            oninput="autoSave()"
+          />
+          <select class="ed-select" id="ed-status" onchange="autoSave()">
+            <option value="Draft">Draft</option>
+            <option value="Fragment">Fragment</option>
+            <option value="Complete">Complete</option>
+          </select>
+          <input
+            class="ed-genre"
+            id="ed-genre"
+            type="text"
+            placeholder="Genre…"
+            oninput="autoSave()"
+          />
+          <button class="ed-del" onclick="deletePiece()" title="Delete piece">🗑</button>
+        </div>
+
+        <div class="editor-area" id="editor-area">
+          <!-- Either the textarea or the placeholder, swapped by JS -->
+          <div class="editor-placeholder" id="ed-placeholder">
+            <div class="editor-placeholder-title">The Atelier</div>
+            <div class="editor-placeholder-sub">Select a piece or press + to begin</div>
+          </div>
+          <textarea
+            id="ed-text"
+            style="display:none"
+            placeholder="Begin here…&#10;&#10;The page awaits."
+            oninput="autoSave()"
+          ></textarea>
+        </div>
+
+        <div class="editor-status-bar">
+          <span id="ed-words">0 words</span>
+          <span id="ed-saved">—</span>
+          <span id="ed-date">—</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MOBILE BOTTOM NAV
+════════════════════════════════════════ -->
+<nav id="mobile-nav">
+  <button class="mob-btn active" id="mob-dispensary" onclick="showView('dispensary')">
+    <i class="mob-icon">◆</i>Dispensary
+  </button>
+  <button class="mob-btn" id="mob-anthology" onclick="showView('anthology')">
+    <i class="mob-icon">❧</i>Anthology
+  </button>
+  <button class="mob-btn" id="mob-atelier" onclick="showView('atelier')">
+    <i class="mob-icon">✒</i>Atelier
+  </button>
+</nav>
+
+<!-- ═══════════════════════════════════════
+     CLIP TOOLTIP (appears on text selection)
+════════════════════════════════════════ -->
+<div id="clip-tip" onclick="clipSelection()">✦ Clip to Anthology</div>
+
+<!-- ═══════════════════════════════════════
+     ADD FRAGMENT MODAL
+════════════════════════════════════════ -->
+<div class="modal-bg" id="modal-add">
+  <div class="modal-box">
+    <h3>Add a Fragment</h3>
+    <label class="f-label">The passage</label>
+    <textarea class="f-area" id="m-text" placeholder="Enter the text you wish to preserve…"></textarea>
+    <label class="f-label">Author</label>
+    <input class="f-input" id="m-author" type="text" placeholder="Author's name" />
+    <label class="f-label">Source</label>
+    <input class="f-input" id="m-source" type="text" placeholder="Story or work title" />
+    <label class="f-label">Tags (comma separated)</label>
+    <input class="f-input" id="m-tags" type="text" placeholder="Gothic, Solitude, Nature" />
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeModal('modal-add')">Cancel</button>
+      <button class="btn" onclick="saveQuote()">Preserve it</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     TOAST
+════════════════════════════════════════ -->
+<div id="toast"></div>
+
+<!-- ═══════════════════════════════════════
+     PWA INSTALL BANNER
+════════════════════════════════════════ -->
+<div id="install-banner">
+  <div class="install-title">Install the Almanac</div>
+  <div class="install-sub">Add to your home screen for a true offline reading experience.</div>
+  <div class="install-row">
+    <button class="btn" id="install-btn" onclick="installPWA()">Install</button>
+    <button class="btn-ghost" onclick="document.getElementById('install-banner').style.display='none'">Later</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SCRIPTS
+════════════════════════════════════════ -->
+<script src="stories.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>

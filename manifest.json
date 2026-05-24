@@ -1,0 +1,50 @@
+{
+  "name": "The Scribbler's Almanac",
+  "short_name": "Almanac",
+  "description": "A literary commonplace for the curious mind. Daily prose, a personal anthology, and a writer's atelier.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f5f0e8",
+  "theme_color": "#1a1612",
+  "orientation": "any",
+  "lang": "en",
+  "categories": ["books", "education", "productivity"],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "The Dispensary",
+      "short_name": "Read",
+      "description": "Read today's curated piece",
+      "url": "/?view=dispensary",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "The Anthology",
+      "short_name": "Collect",
+      "description": "Browse your saved fragments",
+      "url": "/?view=anthology",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "The Atelier",
+      "short_name": "Write",
+      "description": "Open the writing workshop",
+      "url": "/?view=atelier",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
